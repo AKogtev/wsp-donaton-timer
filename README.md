@@ -1,5 +1,5 @@
 ## License
-Source-available, non-commercial: **PolyForm Noncommercial 1.0.0**.  
+Source-available, non-commercial: **MIT License**.  
 See `LICENSE` for full text.  
 For commercial use or exceptions, please contact <wsp@a.kogtev.ru>.
 
