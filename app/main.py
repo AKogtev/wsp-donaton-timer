@@ -1,30 +1,35 @@
+"""Основной модуль FastAPI-приложения: роуты, статика, запуск фоновых задач."""
+
+from pathlib import Path
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
-from pathlib import Path
 
-from .routes.pages import router as pages_router
-from .routes.ws import router as ws_router
-from .services.timer import start_timer_task
-from .core.db import init_db
+from app.routes.pages import router as pages_router
+from app.routes.ws import router as ws_router
+from app.services.timer import start_timer_task
+from app.core.db import init_db
 
-BASE_DIR = Path(__file__).resolve().parent        # .../app
-STATIC_DIR = BASE_DIR / "static"                  # .../app/static
+BASE_DIR = Path(__file__).resolve().parent
+STATIC_DIR = BASE_DIR / "static"
 
 app = FastAPI()
 
-# Статика монтируется по абсолютному пути — не зависит от CWD
+# Подключение статики
 app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
 
 # Роуты
 app.include_router(pages_router)
 app.include_router(ws_router)
 
-# Быстрый healthcheck, чтобы проверить что сервер жив
+
 @app.get("/health")
 async def health():
+    """Простой healthcheck для проверки состояния сервера."""
     return {"status": "ok"}
+
 
 @app.on_event("startup")
 async def _startup():
+    """Инициализация при старте: подготовка БД и запуск фонового таймера."""
     init_db()
     start_timer_task()

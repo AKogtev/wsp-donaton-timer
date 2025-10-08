@@ -1,47 +1,65 @@
-import os, sqlite3, time
+"""Простая обёртка над SQLite для хранения настроек и OAuth-токенов."""
+
+import os
+import sqlite3
+import time
 from typing import Optional
+
 from app.core.config import cfg
 from app.core.state import state
 
+# Путь к файлу БД (можно переопределить переменной окружения APP_DB_PATH)
 DB_PATH = os.getenv("APP_DB_PATH", "app_data.db")
 
-def _conn():
+
+def _conn() -> sqlite3.Connection:
+    """Создать подключение к SQLite с отключённой проверкой потока."""
     return sqlite3.connect(DB_PATH, check_same_thread=False)
 
-def init_db():
+
+def init_db() -> None:
+    """Инициализировать БД и подтянуть настройки в состояние приложения."""
     conn = _conn()
     try:
         cur = conn.cursor()
-        cur.execute("""
+
+        # Гарантируем наличие таблицы настроек
+        cur.execute(
+            """
             CREATE TABLE IF NOT EXISTS settings (
                 key TEXT PRIMARY KEY,
                 value TEXT
             )
-        """)
+            """
+        )
         conn.commit()
 
-        # defaults
+        # Заполнить значения по умолчанию при первом запуске
         if get_setting("rub_to_sec") is None:
             set_setting("rub_to_sec", str(cfg.default_rub_to_sec))
         if get_setting("timer_color") is None:
             set_setting("timer_color", "black")
 
-        # mirror to state
+        # Синхронизировать rub_to_sec в оперативное состояние
         rub = get_setting("rub_to_sec")
         if rub is not None:
             state.rub_to_sec = float(rub)
 
+        # Синхронизировать цвет таймера
         color = get_setting("timer_color")
         if color in ("black", "white"):
             state.timer_text_color = color
 
+        # Если есть сохранённый access_token — отразить его в состоянии (для UI)
         at = get_setting("access_token")
         if at:
             state.oauth_access_token = at
     finally:
         conn.close()
 
+
 def get_setting(key: str) -> Optional[str]:
+    """Вернуть значение настройки по ключу, либо None если не найдено."""
     conn = _conn()
     try:
         cur = conn.cursor()
@@ -51,7 +69,9 @@ def get_setting(key: str) -> Optional[str]:
     finally:
         conn.close()
 
+
 def set_setting(key: str, value: str) -> None:
+    """Сохранить (вставить/обновить) настройку по ключу."""
     conn = _conn()
     try:
         cur = conn.cursor()
@@ -64,16 +84,25 @@ def set_setting(key: str, value: str) -> None:
     finally:
         conn.close()
 
-# tokens helpers (как были)
-def save_tokens(access_token: str, refresh_token: Optional[str], expires_in: Optional[int]):
+
+def save_tokens(access_token: str, refresh_token: Optional[str], expires_in: Optional[int]) -> None:
+    """Сохранить OAuth-токены и время истечения.
+
+    access_token: текущий access token.
+    refresh_token: может отсутствовать при некоторых обновлениях.
+    expires_in: время жизни access token в секундах (если передано).
+    """
     set_setting("access_token", access_token or "")
     if refresh_token is not None:
         set_setting("refresh_token", refresh_token or "")
     if expires_in is not None:
+        # Небольшой запас по времени, чтобы успеть обновить токен
         expires_at = int(time.time()) + int(expires_in) - 30
         set_setting("token_expires_at", str(expires_at))
 
-def load_tokens():
+
+def load_tokens() -> dict:
+    """Загрузить сохранённые токены и время истечения в секундах от эпохи."""
     return {
         "access_token": get_setting("access_token"),
         "refresh_token": get_setting("refresh_token"),

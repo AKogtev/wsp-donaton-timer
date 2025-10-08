@@ -1,35 +1,30 @@
-// app/static/js/auth.js
-(function () {
-  const byId = (id) => document.getElementById(id);
+/**
+ * Логика страницы авторизации: ввод client_id/secret и отправка формы.
+ */
 
-  // Показ/скрытие секрета
-  const toggle = byId("toggle-secret");
-  const secret = byId("client_secret");
-  if (toggle && secret) {
-    toggle.addEventListener("click", (e) => {
-      e.preventDefault();
-      const isHidden = secret.type === "password";
-      secret.type = isHidden ? "text" : "password";
-      toggle.textContent = isHidden ? "Скрыть" : "Показать";
-    });
-  }
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("authForm");
 
-  // Копирование Redirect URI
-  const copyBtn = byId("copy-redirect");
-  const redirect = byId("redirect_uri");
-  if (copyBtn && redirect) {
-    copyBtn.addEventListener("click", async (e) => {
-      e.preventDefault();
-      try {
-        await navigator.clipboard.writeText(redirect.value);
-        const txt = copyBtn.textContent;
-        copyBtn.textContent = "Скопировано!";
-        setTimeout(() => (copyBtn.textContent = txt), 1200);
-      } catch {
-        // fallback
-        redirect.select();
-        document.execCommand("copy");
+  // При отправке формы передаём client_id/secret на сервер
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const clientId = document.getElementById("client_id").value.trim();
+    const clientSecret = document.getElementById("client_secret").value.trim();
+
+    fetch("/start_auth", {
+      method: "POST",
+      body: new URLSearchParams({
+        client_id: clientId,
+        client_secret: clientSecret,
+      }),
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    }).then((resp) => {
+      // Сервер сам вернёт редирект на DonationAlerts
+      if (resp.redirected) {
+        window.location.href = resp.url;
       }
     });
-  }
-})();
+  });
+});

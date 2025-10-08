@@ -5,13 +5,12 @@
   <div class="card fade-in">
     <div class="header">
       <h1>🔑 DonationAlerts · OAuth</h1>
-      <!-- версия приложения -->
       <div class="app-version">v1.0.0</div>
     </div>
 
     <div class="body">
       <div class="grid-2">
-        <!-- ЛЕВАЯ КОЛОНКА: форма -->
+        <!-- Левая колонка: форма -->
         <form class="stack stack--lg" method="post" action="/start_auth" autocomplete="off">
           <section class="section stack stack--md">
             <label for="client_id">OAuth Client ID</label>
@@ -43,7 +42,7 @@
 
             <hr class="hr" />
 
-            <label for="redirect_uri">Redirect URI (должен совпадать в настройках DA)</label>
+            <label for="redirect_uri">Redirect URI</label>
             <div class="row row--nowrap">
               <input
                 class="input input--token"
@@ -62,17 +61,16 @@
           </section>
         </form>
 
-        <!-- ПРАВАЯ КОЛОНКА: подсказки -->
+        <!-- Правая колонка: справка -->
         <section class="section stack stack--lg">
           <div class="stack stack--md">
             <h2 style="font-size: var(--fs-lg);">Как это работает</h2>
             <ol style="margin:0; padding-left: 18px; color: var(--text-muted); line-height: 1.6;">
               <li>Укажите <b>Client ID</b> и <b>Client Secret</b> вашего OAuth-приложения в DonationAlerts.</li>
-              <li>Убедитесь, что в настройках приложения DA в поле <em>Redirect URIs</em> указан
-                  <span class="kbd">{{ redirect_uri }}</span> — в точности, без лишних слэшей.</li>
-              <li>Нажмите <b>Начать авторизацию</b> и подтвердите доступ на странице DA.</li>
-              <li>После успешного разрешения вас вернёт на <span class="kbd">/callback</span>, а затем — в <span class="kbd">/config</span>.</li>
-              <li>На странице <span class="kbd">/config</span> нажмите <b>Save Token</b>, чтобы подключить слушатель донатов.</li>
+              <li>Убедитесь, что в настройках DA в поле <em>Redirect URIs</em> указан <span class="kbd">{{ redirect_uri }}</span>.</li>
+              <li>Нажмите <b>Начать авторизацию</b> и подтвердите доступ.</li>
+              <li>После подтверждения вы вернётесь на <span class="kbd">/callback</span>, а затем в <span class="kbd">/config</span>.</li>
+              <li>В панели <span class="kbd">/config</span> сохраните токен для запуска слушателя донатов.</li>
             </ol>
           </div>
 
@@ -81,18 +79,16 @@
           <div class="stack stack--md" style="color: var(--text-muted);">
             <h2 style="font-size: var(--fs-lg);">Заметки</h2>
             <ul style="margin:0; padding-left: 18px; line-height: 1.6;">
-              <li>Если видите страницу <em>have expired</em> при первом заходе — обновите вкладку и нажмите «Разрешить».</li>
-              <li>Мы сохраняем только <em>access/refresh token</em> локально, чтобы автоматически обновлять доступ.</li>
-              <li>Client Secret отображается как пароль. Кнопкой «Показать» можно временно открыть значение.</li>
+              <li>Если при первом заходе видите <em>have expired</em> — обновите страницу и снова разрешите доступ.</li>
+              <li>Мы сохраняем только <em>access/refresh token</em> локально.</li>
+              <li>Client Secret скрыт, можно временно показать кнопкой «Показать».</li>
             </ul>
           </div>
         </section>
       </div>
     </div>
 
-    <div class="footer-note">
-      Made by WisperLight
-    </div>
+    <div class="footer-note">Made by WisperLight</div>
   </div>
 </div>
 
