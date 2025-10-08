@@ -30,12 +30,12 @@ For commercial use or exceptions, please contact <wsp@a.kogtev.ru>.
 ```
 donaton/
 ├─ app/
-│  ├─ core/         # config/state/… (есть __init__.py)
-│  ├─ routes/       # роуты страниц и сокетов (есть __init__.py)
-│  ├─ services/     # таймер, DonationAlerts, менеджеры (есть __init__.py)
+│  ├─ core/         # config/state/
+│  ├─ routes/       # роуты страниц и сокетов
+│  ├─ services/     # таймер, DonationAlerts, менеджеры
 │  ├─ static/       # style.css, js/…
-│  └─ templates/    # Jinja2 (base.html, config.html, auth.html, …)
-├─ run_app.py       # Точка входа для dev/pyinstaller (см. ниже)
+│  └─ templates/    # Jinja2 (base.html, config.html, auth.html)
+├─ run_app.py       # Точка входа для dev/pyinstaller
 ├─ requirements.txt # Зависимости которые устанавливаются при сборке
 └─ .env             # (опционально) переменные окружения рядом с exe/репо
 ```
