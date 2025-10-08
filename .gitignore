@@ -1,0 +1,72 @@
+# === Python байткод/кеш ===
+__pycache__/
+*.py[cod]
+*$py.class
+
+# === Виртуальные окружения ===
+.venv/
+venv/
+ENV/
+env/
+
+# === Секреты и локальные конфиги ===
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.crt
+
+# === Логи / временные файлы ===
+*.log
+logs/
+log/
+tmp/
+temp/
+*.tmp
+
+# === Базы данных / runtime-артефакты ===
+*.sqlite
+*.sqlite3
+*.db
+*.db-journal
+instance/
+data/
+
+# === Инструменты тестирования/анализа ===
+.coverage
+.coverage.*
+htmlcov/
+.cache/
+.pytest_cache/
+.tox/
+.nox/
+.mypy_cache/
+.dmypy.json
+.pyre/
+ruff_cache/
+.mutmut-cache/
+
+# === Сборка/дистрибуция ===
+build/
+dist/
+*.egg-info/
+*.egg
+pip-wheel-metadata/
+
+# PyInstaller
+*.spec
+
+# === IDE/редакторы ===
+.vscode/
+.idea/
+*.iml
+
+# === ОС спам ===
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# === (опционально) фронтенд ===
+# node_modules/
+# .eslintcache

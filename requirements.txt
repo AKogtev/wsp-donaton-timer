@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+websockets
+httpx
+python-dotenv
+python-multipart
+jinja2
+starlette
+certifi
+pyinstaller

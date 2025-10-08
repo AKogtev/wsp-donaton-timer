@@ -1,0 +1,253 @@
+/*
+  ============================================
+  Donatimer UI · Compact Design System
+  ============================================
+  • Компактные токены (отступы/высоты)
+  • Те же компоненты: container, card, section, grid, row/stack
+  • Формы: .input (+ модификаторы), .btn (+ варианты)
+*/
+
+/* ---------- 1) TOKENS (compact) ---------- */
+:root {
+  /* Цвета */
+  --bg: #0b0f13;
+  --surface-1: #121922;
+  --surface-2: #0e141c;
+  --surface-3: #131b25;
+
+  --text: #d6e1ff;
+  --text-muted: #97a3b8;
+
+  --acc: #6be675;
+  --acc-2: #25a18e;
+  --danger: #ff667a;
+
+  --border: #1a2331;
+
+  /* Тени/фокус */
+  --shadow-lg: 0 10px 30px rgba(0,0,0,.35);
+  --ring-acc: 0 0 0 2px rgba(107,230,117,.25);
+
+  /* Типографика */
+  --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New";
+
+  --fs-xs: 12px;
+  --fs-sm: 13px;
+  --fs-md: 14px;
+  --fs-lg: 16px;
+  --fs-xl: 18px;
+
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+
+  /* Пространство (compact scale) */
+  --space-1: 2px;
+  --space-2: 6px;
+  --space-3: 10px;
+  --space-4: 14px;
+  --space-5: 18px;
+  --space-6: 22px;
+  --space-8: 28px;
+
+  /* Радиусы */
+  --radius-1: 8px;
+  --radius-2: 10px;
+  --radius-3: 12px;
+  --radius-4: 14px;
+  --radius-5: 16px;
+
+  /* Высоты контролов (compact) */
+  --ctl: 36px;     /* было 40px */
+  --ctl-lg: 48px;  /* было 54px */
+
+  /* Ширины */
+  --w-timer: 190px;  /* было 200px */
+  --w-token: 380px;  /* было 420px */
+  --w-coef: 110px;   /* было 120px */
+}
+
+/* ---------- 2) BASE ---------- */
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: var(--fs-md);
+  background: radial-gradient(1200px 800px at 50% -20%, #141a22 15%, var(--bg) 60%);
+}
+h1,h2,h3 { margin: 0; font-weight: var(--fw-semibold); }
+label { font-size: var(--fs-sm); color: var(--text-muted); }
+
+/* ---------- 3) LAYOUT ---------- */
+.container { max-width: 1040px; margin: 32px auto; padding: var(--space-5); }
+
+.card {
+  background: linear-gradient(180deg, var(--surface-1) 0%, var(--surface-2) 100%);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-5);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+
+.header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: var(--space-4) var(--space-5);
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(180deg, #121a24, rgba(18,26,36,0.6));
+}
+.header h1 { font-size: var(--fs-xl); color: #eaf2ff; letter-spacing: .3px; }
+.header .hint { color: var(--text-muted); font-size: var(--fs-sm); }
+
+.body { padding: var(--space-5); }
+
+/* Двухколоночная сетка (compact gaps) */
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-5) var(--space-6); /* было 24/32 → 18/22 */
+}
+@media (max-width: 980px) { .grid-2 { grid-template-columns: 1fr; } }
+
+/* Подкарточки (внутренние секции) — компактные паддинги */
+.section {
+  background: linear-gradient(180deg, var(--surface-3), var(--surface-2));
+  border: 1px solid var(--border);
+  border-radius: var(--radius-4);
+  padding: var(--space-4) var(--space-4);  /* было : var(--space-5) */
+}
+.section + .section { margin-top: var(--space-3); }
+
+/* ---------- 4) STACKS / ROWS ---------- */
+.stack { display: grid; gap: var(--space-3); }
+.stack--sm { gap: var(--space-2); }
+.stack--md { gap: var(--space-3); }   /* было 16px */
+.stack--lg { gap: var(--space-5); }   /* было 24px */
+
+.row { display: flex; align-items: center; gap: var(--space-3); flex-wrap: wrap; }
+.row--nowrap { flex-wrap: nowrap; }
+.row--gap-lg { gap: var(--space-4); }
+
+.mt-2 { margin-top: var(--space-2); }
+.mt-3 { margin-top: var(--space-3); }
+.mt-4 { margin-top: var(--space-4); }
+.mt-6 { margin-top: var(--space-5); } /* компактнее, чем раньше */
+
+.hr { height: 1px; background: var(--border); border: 0; margin: var(--space-3) 0; }
+
+/* ---------- 5) FORMS ---------- */
+.input {
+  height: var(--ctl);
+  padding: 0 var(--space-4);
+  color: var(--text);
+  background: #0d141c;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-3);
+  outline: none;
+  transition: .2s border, .2s box-shadow, .2s transform;
+}
+.input:focus { border-color: #244056; box-shadow: var(--ring-acc); transform: translateY(-1px); }
+
+.input--timer {
+  height: var(--ctl-lg);
+  width: var(--w-timer);
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: var(--fs-lg);
+  letter-spacing: .03em;
+  border-radius: var(--radius-4);
+}
+.input--token { min-width: var(--w-token); }
+.input--coef  { width: var(--w-coef); -moz-appearance: textfield; }
+.input--coef::-webkit-outer-spin-button,
+.input--coef::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+/* ---------- 6) BUTTONS ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  height: var(--ctl);
+  padding: 0 var(--space-4);
+  color: #eaf2ff;
+  background: linear-gradient(180deg, #182231, #121a24);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-3);
+  cursor: pointer; user-select: none; line-height: 1;
+  transition: transform .12s ease, box-shadow .2s ease, border-color .2s ease;
+  text-decoration: none;
+}
+.btn:hover { transform: translateY(-1px); border-color: #26465f; }
+.btn:active { transform: translateY(0); }
+
+.btn--accent {
+  background: linear-gradient(180deg, #1b3b2a, #14261d);
+  border-color: #244833;
+  box-shadow: 0 8px 22px rgba(60, 255, 145, 0.08);
+}
+.btn--accent:hover { box-shadow: 0 14px 28px rgba(60, 255, 145, 0.12); }
+
+.btn--danger { background: linear-gradient(180deg, #402028, #2a1419); border-color: #5b2b36; color: #ffd7dc; }
+
+.btn--lg   { height: var(--ctl-lg); padding: 0 var(--space-5); border-radius: var(--radius-4); }
+.btn--chip { height: var(--ctl);    padding: 0 var(--space-4); border-radius: var(--radius-2); }
+
+.btn-group { display: flex; gap: var(--space-3); flex-wrap: wrap; }
+
+/* ---------- 7) MISC ---------- */
+.kbd {
+  display: inline-block;
+  padding: 3px 6px 4px;
+  background: #0c1219;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-2);
+  color: #9ab1d1;
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  line-height: 1;
+  vertical-align: middle;
+}
+
+.log {
+  background: #0b1118;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-3);
+  padding: var(--space-4);
+  height: 240px;               /* было 280 */
+  overflow: auto;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.4;
+  color: #a5ffb7;
+  box-shadow: inset 0 0 30px rgba(0,0,0,.25);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.footer-note {
+  padding: var(--space-3) var(--space-5);
+  border-top: 1px solid var(--border);
+  background: linear-gradient(180deg, rgba(18,26,36,0.6), #121a24);
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+}
+
+.fade-in { animation: fade .25s ease-out; }
+@keyframes fade { from {opacity:.5; transform: translateY(4px)} to {opacity:1; transform: translateY(0)} }
+
+/* Версия приложения (fixed badge) */
+.app-version{
+  position: fixed;
+  right: 12px;
+  bottom: 12px;
+  padding: 4px 8px;
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+  background: linear-gradient(180deg, var(--surface-3), var(--surface-2));
+  border: 1px solid var(--border);
+  border-radius: var(--radius-2);
+  box-shadow: var(--shadow-lg);
+  opacity: .9;
+  z-index: 9999;
+}

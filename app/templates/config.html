@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block title %}Timer Config{% endblock %}
+{% block body %}
+<div class="container">
+  <div class="card fade-in">
+    <div class="header">
+      <h1>⏱️ Timer · Control Panel</h1>
+      <!-- версия приложения -->
+      <div class="app-version">v1.0.0</div>
+    </div>
+
+    <div class="body stack stack--lg">
+      <!-- Две колонки -->
+      <div class="grid-2">
+
+        <!-- ЛЕВАЯ КОЛОНКА -->
+        <div class="stack stack--lg">
+
+          <!-- Таймер -->
+          <section class="section stack stack--md">
+            <label>Время (HH:MM:SS)</label>
+
+            <div class="row row--nowrap">
+              <input type="text" id="time" class="input input--timer" placeholder="00:01:00" />
+              <button class="btn btn--lg" id="btn-set" type="button">Set</button>
+            </div>
+
+            <div class="btn-group mt-2">
+              <button class="btn btn--accent" id="btn-start" type="button">Start</button>
+              <button class="btn" id="btn-stop" type="button">Stop</button>
+              <button class="btn btn--danger" id="btn-reset" type="button">Reset</button>
+            </div>
+          </section>
+
+          <!-- Цвет таймера -->
+          <section class="section stack stack--md">
+            <label>Цвет текста таймера</label>
+            <div class="btn-group">
+              <button class="btn btn--chip" id="btn-color-black" type="button">Чёрный</button>
+              <button class="btn btn--chip" id="btn-color-white" type="button">Белый</button>
+            </div>
+          </section>
+        </div>
+
+        <!-- ПРАВАЯ КОЛОНКА -->
+        <div class="stack stack--lg">
+          <section class="section stack stack--md">
+            <label>DonationAlerts · Авторизация</label>
+            <div class="btn-group">
+              <a class="btn" href="/auth" target="_blank">Открыть /auth</a>
+            </div>
+
+            <hr class="hr" />
+
+            <label>OAuth Access Token</label>
+            <div class="row row--nowrap">
+              <input type="text" id="token" class="input input--token" placeholder="OAuth Access Token" value="{{ token }}" />
+              <button class="btn btn--accent" id="btn-save-token" type="button">Save Token</button>
+            </div>
+
+            <hr class="hr" />
+
+            <label>Коэффициент (секунд за 1 ₽)</label>
+            <div class="row row--nowrap">
+              <input
+                type="number"
+                id="coef"
+                class="input input--coef"
+                placeholder="Секунд за 1 рубль"
+                value="{{ coef }}"
+                step="0.1"
+                min="0"
+              />
+              <button class="btn" id="btn-save-coef" type="button">Save Ratio</button>
+            </div>
+
+            <div class="mt-2" style="color:var(--text-muted);">
+              Например, 4.5 → 1₽ = +4.5 сек к таймеру (доли секунд накапливаются).
+            </div>
+          </section>
+        </div>
+
+      </div>
+
+      <!-- Логи на всю ширину -->
+      <section class="section stack">
+        <label>Логи</label>
+        <div id="log" class="log"></div>
+      </section>
+    </div>
+
+    <div class="footer-note">
+      Made by WisperLight
+    </div>
+  </div>
+</div>
+
+<!-- твой JS (подтверждение Set/Reset уже внутри) -->
+<script src="/static/js/config.js?v=20251009"></script>
+{% endblock %}

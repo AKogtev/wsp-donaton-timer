@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Countdown{% endblock %}
+{% block head %}
+<style>
+  /* прозрачный фон и чёрный текст */
+  html, body {
+    height: 100%;
+    margin: 0;
+    background: transparent !important;
+    color: #000;
+  }
+
+  /* центрируем цифры, оставляем тот же моношрифт */
+  body {
+    display: grid;
+    place-items: center;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  }
+
+  /* крупный размер, никаких свечений/анимаций */
+  #timer {
+    font-size: clamp(48px, 12vw, 160px);
+    letter-spacing: 0.03em;
+    line-height: 1;
+    user-select: none;
+  }
+</style>
+{% endblock %}
+{% block body %}
+  <div id="timer">00:01:00</div>
+  <script src="/static/js/timer.js"></script>
+{% endblock %}
