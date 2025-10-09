@@ -4,11 +4,33 @@ const timerWS = new WebSocket(`ws://${location.host}/ws`);
 const colorWS = new WebSocket(`ws://${location.host}/timer_cfg`);
 
 const timerEl = document.getElementById("timer");
+let lastTime = null; // запоминаем предыдущее значение секунд
 
 // Получаем обновления времени от сервера
 timerWS.onmessage = (event) => {
   if (timerEl) {
-    timerEl.textContent = event.data;
+    const newTime = event.data;
+
+    // Сравниваем новое и старое значение (HH:MM:SS → в секунды)
+    const toSeconds = (str) => {
+      const [h, m, s] = str.split(":").map(Number);
+      return h * 3600 + m * 60 + s;
+    };
+
+    if (lastTime !== null) {
+      const prevSec = toSeconds(lastTime);
+      const newSec = toSeconds(newTime);
+
+      if (newSec > prevSec) {
+        // Было пополнение → запускаем анимацию
+        timerEl.classList.remove("timer-pulse");
+        void timerEl.offsetWidth; // хак для перезапуска CSS-анимации
+        timerEl.classList.add("timer-pulse");
+      }
+    }
+
+    timerEl.textContent = newTime;
+    lastTime = newTime;
   }
 };
 
