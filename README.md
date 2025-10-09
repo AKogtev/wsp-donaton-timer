@@ -61,7 +61,7 @@ py -m venv .venv
 
 Запускаем сборку .exe файла:
 ```
-.\.venv\Scripts\pyinstaller --noconfirm --onefile --name wsp-donaton-timer --paths . --hidden-import dotenv --add-data "app\templates;app\templates" --add-data "app\static;app\static" run_app.py
+.\.venv\Scripts\pyinstaller --noconfirm --onefile --name wsp-donaton-timer --paths . --hidden-import dotenv --add-data "app\templates;app\templates" --add-data "app\static;app\static" --icon=icon.ico run_app.py
 ```
 
 На выходе получаем готовый .exe файл в директории dist, то есть `dist\wsp-donaton-timer.exe`
