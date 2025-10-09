@@ -345,6 +345,26 @@ label {
   }
 }
 
+/* Эффект "пульса" при прибавке времени */
+@keyframes timerPulse {
+  0% {
+    transform: scale(1);
+    color: inherit;
+  }
+  20% {
+    transform: scale(1.25);
+    color: #4dff4d; /* мягкий красный */
+  }
+  100% {
+    transform: scale(1);
+    color: inherit;
+  }
+}
+
+.timer-pulse {
+  animation: timerPulse 0.6s ease-out;
+}
+
 /* Версия приложения (fixed badge) */
 .app-version {
   position: fixed;
