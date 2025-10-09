@@ -1,6 +1,6 @@
 /**
- * Логика панели управления таймером.
- * Управление временем, запуск/остановка, цвет, коэффициент и токен OAuth.
+ * Логика панели управления таймером:
+ * управление временем, запуск/остановка, цвет, коэффициент, OAuth.
  */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -17,6 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnSaveToken = document.getElementById("btn-save-token");
   const btnColorBlack = document.getElementById("btn-color-black");
   const btnColorWhite = document.getElementById("btn-color-white");
+  const btnLogout = document.getElementById("btn-logout");
 
   const logEl = document.getElementById("log");
 
@@ -38,7 +39,8 @@ document.addEventListener("DOMContentLoaded", () => {
       msg.toLowerCase().includes("установлено") ||
       msg.toLowerCase().includes("изменено") ||
       msg.toLowerCase().includes("запущен") ||
-      msg.toLowerCase().includes("сохранён")
+      msg.toLowerCase().includes("сохранён") ||
+      msg.toLowerCase().includes("очищен")
     ) {
       type = "success";
     }
@@ -100,6 +102,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const token = tokenInput.value.trim();
     if (token) {
       ws.send(`token ${token}`);
+    }
+  });
+
+  // Выход из DonationAlerts
+  btnLogout.addEventListener("click", () => {
+    if (confirm("Выйти из DonationAlerts и удалить сохранённые токены?")) {
+      ws.send("logout");
     }
   });
 });

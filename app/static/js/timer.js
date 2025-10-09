@@ -1,7 +1,3 @@
-/**
- * Логика страницы таймера: отображение оставшегося времени и обновление по WebSocket.
- */
-
 document.addEventListener("DOMContentLoaded", () => {
   const timerEl = document.getElementById("timer");
   let lastValue = null;
@@ -32,4 +28,3 @@ document.addEventListener("DOMContentLoaded", () => {
     timerEl.textContent = "⏱ Соединение закрыто";
   };
 });
-

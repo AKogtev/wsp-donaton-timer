@@ -1,46 +1,53 @@
 """Глобальное состояние приложения и утилиты широковещательной отправки по WebSocket."""
 
 import asyncio
-from typing import Optional
+import time
+from pathlib import Path
 
 from app.core.config import cfg
+
+# Папка логов
+LOG_DIR = Path("wsp-timer-data") / "logs"
+LOG_DIR.mkdir(parents=True, exist_ok=True)
+LOG_FILE = LOG_DIR / "wsp-timer.log"
 
 
 class AppState:
     """Хранилище текущего состояния приложения (простая модель без потоковой безопасности)."""
 
-    # Параметры таймера
     timer_total_seconds: int = 60
     remaining_seconds: int = 60
     is_running: bool = False
 
-    # Подключённые WebSocket-клиенты
-    timer_clients: list = []        # клиенты страницы таймера (/ws)
-    control_clients: list = []      # клиенты панели управления (/control)
-    timer_cfg_clients: list = []    # клиенты, слушающие изменения настроек таймера (/timer_cfg)
+    timer_clients: list = []
+    control_clients: list = []
+    timer_cfg_clients: list = []
 
-    # OAuth (текущие значения доступны для UI)
-    oauth_client_id: Optional[str] = cfg.da_client_id or None
-    oauth_client_secret: Optional[str] = cfg.da_client_secret or None
+    oauth_client_id: str | None = cfg.da_client_id or None
+    oauth_client_secret: str | None = cfg.da_client_secret or None
     oauth_redirect_uri: str = cfg.oauth_redirect_uri
-    oauth_access_token: Optional[str] = None
+    oauth_access_token: str | None = None
 
-    # Настройки таймера (из БД / по умолчанию)
     rub_to_sec: float = float(cfg.default_rub_to_sec)
     fraction_carry: float = 0.0
-    timer_text_color: str = "black"  # "black" | "white"
+    timer_text_color: str = "black"
 
-    # Фоновые задачи и синхронизация
-    donation_task: Optional[asyncio.Task] = None
+    donation_task: asyncio.Task | None = None
     lock = asyncio.Lock()
 
 
-# Единый экземпляр состояния
+# Единый экземпляр
 state = AppState()
 
 
+def _write_log(message: str) -> None:
+    """Записать строку в лог-файл с таймстампом."""
+    ts = time.strftime("%Y-%m-%d %H:%M:%S")
+    with open(LOG_FILE, "a", encoding="utf-8") as f:
+        f.write(f"[{ts}] {message}\n")
+
+
 async def broadcast_timer(msg: str) -> None:
-    """Отправить сообщение всем подписчикам таймера; удалить оборванные соединения."""
     dead = []
     for ws in state.timer_clients:
         try:
@@ -52,7 +59,8 @@ async def broadcast_timer(msg: str) -> None:
 
 
 async def broadcast_control(msg: str) -> None:
-    """Отправить сообщение всем клиентам панели управления; удалить оборванные соединения."""
+    """Отправить сообщение всем клиентам панели управления и записать его в лог."""
+    _write_log(msg)
     dead = []
     for ws in state.control_clients:
         try:
@@ -64,7 +72,6 @@ async def broadcast_control(msg: str) -> None:
 
 
 async def broadcast_timer_cfg(msg: str) -> None:
-    """Отправить сообщение всем подписчикам настроек таймера; удалить оборванные соединения."""
     dead = []
     for ws in state.timer_cfg_clients:
         try:
