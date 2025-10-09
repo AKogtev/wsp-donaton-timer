@@ -32,7 +32,10 @@ async def config_page(request: Request):
 
     rub = get_setting("rub_to_sec")
     if rub is not None:
-        state.rub_to_sec = int(rub)
+        try:
+            state.rub_to_sec = float(rub)
+        except ValueError:
+            state.rub_to_sec = 10.0
 
     return templates.TemplateResponse(
         "config.html",

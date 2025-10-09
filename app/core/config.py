@@ -20,7 +20,7 @@ class Config:
     oauth_redirect_uri: str = os.getenv("OAUTH_REDIRECT_URI", "http://localhost:8000/callback").strip()
 
     # Базовый коэффициент конвертации: 1₽ -> секунды (значение по умолчанию можно менять в /config)
-    default_rub_to_sec: int = int(os.getenv("RUB_TO_SEC", "10"))
+    default_rub_to_sec: float = float(os.getenv("RUB_TO_SEC", "10"))
 
 
 # Глобальный экземпляр конфигурации

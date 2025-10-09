@@ -3,28 +3,35 @@
  */
 
 document.addEventListener("DOMContentLoaded", () => {
-  const form = document.getElementById("authForm");
+  const toggleBtn = document.getElementById("toggle-secret");
+  const secretInput = document.getElementById("client_secret");
+  const copyBtn = document.getElementById("copy-redirect");
+  const redirectInput = document.getElementById("redirect_uri");
 
-  // При отправке формы передаём client_id/secret на сервер
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const clientId = document.getElementById("client_id").value.trim();
-    const clientSecret = document.getElementById("client_secret").value.trim();
-
-    fetch("/start_auth", {
-      method: "POST",
-      body: new URLSearchParams({
-        client_id: clientId,
-        client_secret: clientSecret,
-      }),
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-    }).then((resp) => {
-      // Сервер сам вернёт редирект на DonationAlerts
-      if (resp.redirected) {
-        window.location.href = resp.url;
+  // Переключатель показа/скрытия Client Secret
+  if (toggleBtn && secretInput) {
+    toggleBtn.addEventListener("click", () => {
+      if (secretInput.type === "password") {
+        secretInput.type = "text";
+        toggleBtn.textContent = "Скрыть";
+      } else {
+        secretInput.type = "password";
+        toggleBtn.textContent = "Показать";
       }
     });
-  });
+  }
+
+  // Кнопка "Копировать" для Redirect URI
+  if (copyBtn && redirectInput) {
+    copyBtn.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(redirectInput.value);
+        copyBtn.textContent = "Скопировано!";
+        setTimeout(() => (copyBtn.textContent = "Копировать"), 1500);
+      } catch (err) {
+        console.error("Не удалось скопировать:", err);
+      }
+    });
+  }
 });
+
