@@ -31,6 +31,16 @@
             <div class="btn-group">
               <button class="btn btn--chip" id="btn-color-black" type="button">Чёрный</button>
               <button class="btn btn--chip" id="btn-color-white" type="button">Белый</button>
+              <script>
+                const ctrlWS = new WebSocket(`ws://${location.host}/control`);
+              
+                document.getElementById("btn-color-black").addEventListener("click", () => {
+                  ctrlWS.send("color black");
+                });
+                document.getElementById("btn-color-white").addEventListener("click", () => {
+                  ctrlWS.send("color white");
+                });
+              </script>
             </div>
           </section>
         </div>

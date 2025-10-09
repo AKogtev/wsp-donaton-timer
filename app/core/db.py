@@ -11,7 +11,7 @@ from app.core.config import cfg
 from app.core.state import state
 
 # Папка данных рядом с exe или исходниками
-BASE_DIR = Path(getattr(sys, "_MEIPASS", Path(__file__).resolve().parent)).parent
+BASE_DIR = Path.cwd()
 DATA_DIR = BASE_DIR / "wsp-timer-data"
 DATA_DIR.mkdir(exist_ok=True)
 
