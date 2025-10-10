@@ -9,10 +9,12 @@ from app.core.db import save_runtime_state
 
 
 def format_time(sec: int) -> str:
-    """Форматировать количество секунд в строку HH:MM:SS."""
-    td = str(timedelta(seconds=sec))
-    h, m, s = td.split(":")
-    return f"{int(h):02}:{int(m):02}:{int(s):02}"
+    """Форматировать количество секунд в строку DD:HH:MM:SS."""
+    days = sec // 86400
+    hours = (sec % 86400) // 3600
+    minutes = (sec % 3600) // 60
+    seconds = sec % 60
+    return f"{days:02}:{hours:02}:{minutes:02}:{seconds:02}"
 
 
 async def timer_loop():
